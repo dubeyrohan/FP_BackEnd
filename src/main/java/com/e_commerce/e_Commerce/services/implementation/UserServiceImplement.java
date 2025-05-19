@@ -13,9 +13,16 @@ public class UserServiceImplement implements UserService {
     private UserRepository userRepository;
 
 
-    //Error Handler to show on UI or Postman
+    //Error Handler to show on UI or Postman for Wrong Password
     public class InvalidPasswordException extends RuntimeException {
         public InvalidPasswordException(String message) {
+            super(message);
+        }
+    }
+
+    //Error Handler to show User Already Exist when signing Up
+    public class UserAlreadyExistsException extends RuntimeException {
+        public UserAlreadyExistsException(String message) {
             super(message);
         }
     }
@@ -27,8 +34,7 @@ public class UserServiceImplement implements UserService {
         //Check if user already exists or not
         User local = this.userRepository.findByEmail(user.getEmail());
         if(local != null){
-            System.out.println("User Already Exist");
-            throw new Exception("User Already Exist");
+            throw new UserAlreadyExistsException("User Already Exist" + user.getEmail());
         }
         else{
             //Creating user

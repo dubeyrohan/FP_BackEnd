@@ -44,6 +44,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
+    @ExceptionHandler(UserServiceImplement.UserAlreadyExistsException.class)
+    public ResponseEntity<String> handleUserAlreadyExists(UserServiceImplement.UserAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage()); // 409 Conflict
+    }
 
     //delete the user
     //public void deleteUser()
