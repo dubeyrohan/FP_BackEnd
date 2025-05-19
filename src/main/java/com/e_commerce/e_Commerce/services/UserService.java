@@ -8,7 +8,7 @@ public interface UserService {
     public User createUser(User user) throws Exception;
 
     //get user
-    public User getUser(String email) throws Exception;
+    public User getUser(String email, String password) throws Exception;
 
     //delete user
     public void deleteUser(long userId);

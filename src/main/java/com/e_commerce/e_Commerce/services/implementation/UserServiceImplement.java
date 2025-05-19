@@ -12,6 +12,14 @@ public class UserServiceImplement implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+
+    //Error Handler to show on UI or Postman
+    public class InvalidPasswordException extends RuntimeException {
+        public InvalidPasswordException(String message) {
+            super(message);
+        }
+    }
+
     //Creating User
     @Override
     public User createUser(User user) throws Exception {
@@ -32,12 +40,19 @@ public class UserServiceImplement implements UserService {
 
     //getting user by email
     @Override
-    public User getUser(String email) throws Exception {
-        if(this.userRepository.findByEmail(email) != null)
-            return this.userRepository.findByEmail(email);
+    public User getUser(String email, String password) throws Exception {
+        User user = this.userRepository.findByEmail(email);
+
+        if (user != null) {
+
+            if (user.getPassword().equals(password)) {
+                return user;
+            } else {
+                throw new InvalidPasswordException("Password is wrong");
+            }
+        }
         else {
-            System.out.println("User Not Found");
-            throw new Exception("User Not Found");
+            throw new RuntimeException("User Not Found.");
         }
     }
 
